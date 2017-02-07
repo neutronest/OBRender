@@ -10,10 +10,10 @@ type bookmark_item = {
   item_type: bookmark_type;
   name: string;
   url: string;
-  children: json list 
+  children: bookmark_item list
 }
 
-let new_bookmark_item json_data =
+let rec new_bookmark_item json_data =
   let timestamp_ = json_data |> member "date_added" |> to_string in
   let id_ = json_data |> member "id" |> to_string in
   let meta_info_ = json_data |> member "meta_info" |> to_string in
@@ -25,7 +25,9 @@ let new_bookmark_item json_data =
     | _ -> Url in
   let name_ = json_data |> member "name" |> to_string in
   let url_ = json_data |> member "url" |> to_string in
-  let children_ = json_data |> member "children" |> to_list in
+  let children_ =
+    let children_json = json_data |> member "children" |> to_list in
+    List.map new_bookmark_item children_json in
   {
     timestamp = timestamp_;
     id = id_;
