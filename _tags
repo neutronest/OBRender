@@ -1,0 +1,5 @@
+true: package(threads)
+true: package(core)
+true: package(yojson)
+true: bin_annot
+
